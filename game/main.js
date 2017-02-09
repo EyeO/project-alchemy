@@ -1,10 +1,27 @@
 $(function() {
+
+    //Game loop
+    var lastTime = Date.now();
+    var lagCorrection = false;
+    var updateInterval = 100;
+
+    function gameLoop() {
+        var deltaTime = lagCorrection ? Date.now() - lastTime : updateInterval;
+        if (lagCorrection) {
+            lastTime = Date.now();
+        }
+        Machines.update(deltaTime);
+    }
+    setInterval(gameLoop, updateInterval);
+
+    //Variables
     var credits = 0,
         matterRate = 0,
         matter = 0,
         energy = 0;
 
     //http://javascript.info/tutorial/inheritance
+    //Proto script
     function inherit(proto) {
         function F() {}
         F.prototype = proto;
@@ -29,7 +46,7 @@ $(function() {
         this.rate = rate;
 
         this.update = function(deltaTime) {
-            alert(deltaTime * this.instances * this.rate / 1000);
+            console.log(this.name + ':' + deltaTime * this.instances * this.rate / 1000);
         };
     }
 
@@ -75,8 +92,5 @@ $(function() {
 
     //Purchase 3 solar panels
     Machines.getMachineByID(1).purchase(3);
-
-    //Update values
-    Machines.update(50);
 
 });
