@@ -21,20 +21,43 @@ $(function() {
         energy = 0;
         energyRate = 0;
 
+    //Update resources
     function updateResources(deltaResource) {
         energy += deltaResource.energyRate;
         energyRate = deltaResource.energyRate * 1000 / updateInterval;
 
-        $('.current-energy').html(energy);
-        $('.current-energyRate').html(energyRate);
+        $('.current-energy').html(formatNumber(energy));
+        $('.current-energyRate').html(formatNumber(energyRate));
     }
 
-    //http://javascript.info/tutorial/inheritance
-    //Proto script
+    //Proto script - http://javascript.info/tutorial/inheritance
     function inherit(proto) {
         function F() {}
         F.prototype = proto;
         return new F();
+    }
+
+    //Format large numbers - http://stackoverflow.com/a/17633552
+    var ranges = [
+      { divider: 1e30 , suffix: 'W' },
+      { divider: 1e27 , suffix: 'X' },
+      { divider: 1e24 , suffix: 'Y' },
+      { divider: 1e21 , suffix: 'Z' },
+      { divider: 1e18 , suffix: 'E' },
+      { divider: 1e15 , suffix: 'P' },
+      { divider: 1e12 , suffix: 'T' },
+      { divider: 1e9 , suffix: 'G' },
+      { divider: 1e6 , suffix: 'M' },
+      { divider: 1e3 , suffix: 'k' }
+    ];
+
+    function formatNumber(n) {
+      for (var i = 0; i < ranges.length; i++) {
+        if (n >= ranges[i].divider) {
+          return (n / ranges[i].divider).toString() + ranges[i].suffix;
+        }
+      }
+      return n.toString();
     }
 
     //Declare machine class
@@ -62,8 +85,7 @@ $(function() {
     //Energy collector inherits from machine
     EnergyCollector.prototype = inherit(Machine.prototype);
 
-    //http://stackoverflow.com/a/1248023
-    //Keep track of all machines
+    //Keep track of all machines - http://stackoverflow.com/a/1248023
     Machines = {
         newEnergyCollector: function() {
             var newMachine = {};
@@ -102,6 +124,6 @@ $(function() {
     Machines.newEnergyCollector(2, 500000, 1000000, 'Tier 2 Solar Panel');
 
     //Purchase 3 solar panels
-    Machines.getMachineByID(1).purchase(10);
+    Machines.getMachineByID(2).purchase(100);
 
 });
