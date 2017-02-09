@@ -10,7 +10,7 @@ $(function() {
         if (lagCorrection) {
             lastTime = Date.now();
         }
-        Machines.update(deltaTime);
+        updateResources({'energyRate': Machines.update(deltaTime)});
     }
     setInterval(gameLoop, updateInterval);
 
@@ -19,6 +19,15 @@ $(function() {
         matterRate = 0,
         matter = 0,
         energy = 0;
+        energyRate = 0;
+
+    function updateResources(deltaResource) {
+        energy += deltaResource.energyRate;
+        energyRate = deltaResource.energyRate * 1000 / updateInterval;
+
+        $('.current-energy').html(energy);
+        $('.current-energyRate').html(energyRate);
+    }
 
     //http://javascript.info/tutorial/inheritance
     //Proto script
@@ -46,7 +55,7 @@ $(function() {
         this.rate = rate;
 
         this.update = function(deltaTime) {
-            console.log(this.name + ':' + deltaTime * this.instances * this.rate / 1000);
+            return deltaTime * this.instances * this.rate / 1000;
         };
     }
 
@@ -80,17 +89,19 @@ $(function() {
         },
 
         update: function(deltaTime) {
+            var increase = 0;
             for (var i = 0; i < this.allMachines.length; i++) {
-                this.allMachines[i].update(deltaTime);
+                increase += this.allMachines[i].update(deltaTime);
             }
+            return increase;
         }
     };
 
     //Declare solar panels
-    Machines.newEnergyCollector(1, 1000, 100, 'Tier 1 Solar Panel');
-    Machines.newEnergyCollector(2, 1000000, 50000, 'Tier 2 Solar Panel');
+    Machines.newEnergyCollector(1, 100, 1000, 'Tier 1 Solar Panel');
+    Machines.newEnergyCollector(2, 500000, 1000000, 'Tier 2 Solar Panel');
 
     //Purchase 3 solar panels
-    Machines.getMachineByID(1).purchase(3);
+    Machines.getMachineByID(1).purchase(10);
 
 });
