@@ -43,9 +43,11 @@ $.when(
     }
 
     //Declare
-    Machines.newMachine('generator', 1, 100, 1000, 'Mine', 20);
+    Machines.newMachine('collector', 0, 100, 1000, 'Solar Panel');
+    Machines.newMachine('harvester', 1, 500, 200, 'Mine');
 
     //Purchase
-    Machines.getMachineByID(1).purchase(1);
+    Machines.getMachineByID(0).purchase(1);
+    Machines.getMachineByID(1).purchase(2);
 
 });
