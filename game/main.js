@@ -1,37 +1,52 @@
-$(function() {
+//Load scripts - http://stackoverflow.com/a/11803418
+$.when(
+    $.getScript('game/misc.js'),
+    $.getScript('game/model/Machine.js'),
+    $.getScript('game/model/Machines.js'),
+    $.getScript('game/model/EnergyCollector.js'),
+    $.Deferred(function(deferred){
+        $(deferred.resolve);
+    })
+).done(function() {
+
+    //Game loop
+    var lastTime = Date.now();
+    var lagCorrection = false;
+    var updateInterval = 100;
+
+    function gameLoop() {
+        var deltaTime = lagCorrection ? Date.now() - lastTime : updateInterval;
+        if (lagCorrection) {
+            lastTime = Date.now();
+        }
+        updateResources({'energyRate': Machines.update(deltaTime)});
+    }
+    setInterval(gameLoop, updateInterval);
+
+    //Variables
     var credits = 0,
         matterRate = 0,
         matter = 0,
         energy = 0;
+        energyRate = 0;
 
-    function inherit(proto) {
-      function F() {}
-      F.prototype = proto;
-      return new F();
+    //Update resources
+    function updateResources(deltaResource) {
+        energy += deltaResource.energyRate;
+        energyRate = deltaResource.energyRate * 1000 / updateInterval;
+
+        $('.current-energy').html(formatNumber(energy));
+        $('.current-energyRate').html(formatNumber(energyRate));
     }
 
-    function Machine(cost){
-      this.cost = cost;
-      this.number = 0;
-    }
 
-    Machine.prototype.numOfMachines = function() {
-        alert(this.number);
-    };
 
-    Machine.prototype.purchase = function(num) {
-        this.number += num;
-    };
 
-    function energyCollector(cost, rate){
-        Machine.call(this, cost);
-        this.rate = rate;
-    }
-    energyCollector.prototype = inherit(Machine.prototype);
+    //Declare solar panels
+    Machines.newEnergyCollector(1, 100, 1000, 'Tier 1 Solar Panel');
+    Machines.newEnergyCollector(2, 500000, 1000000, 'Tier 2 Solar Panel');
 
-    var solarPanel = new energyCollector(1000,100);
-    //solarPanel.purchase(3);
-    //solarPanel.purchase(7);
-    //solarPanel.numOfMachines();
+    //Purchase 3 solar panels
+    Machines.getMachineByID(2).purchase(100);
 
 });
