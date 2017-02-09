@@ -1,9 +1,10 @@
 //Declare machine class
-function Machine(id, cost, name) {
+function Machine(id, cost, rate, name) {
     this.id = id;
     this.cost = cost;
     this.instances = 0;
     this.name = name;
+    this.rate = rate;
 
     this.purchase = function(num) {
         this.instances += num;
@@ -12,9 +13,29 @@ function Machine(id, cost, name) {
 
 //Keep track of all machines - http://stackoverflow.com/a/1248023
 Machines = {
-    newEnergyCollector: function() {
+    newMachine: function() {
         var newMachine = {};
-        EnergyCollector.apply(newMachine, arguments);
+
+        var controlArgument = arguments[0];
+        controlArgument = [].shift.apply(arguments);
+
+        switch (controlArgument) {
+          case 'collector':
+            EnergyCollector.apply(newMachine, arguments);
+            break;
+          case 'harvester':
+            MatterHarvester.apply(newMachine, arguments);
+            break;
+          case 'fabricator':
+            MassFabricator.apply(newMachine, arguments);
+            break;
+          case 'generator':
+            EnergyGenerator.apply(newMachine, arguments);
+            break;
+          default:
+            throw "Initialisation error: unknown machine type";
+        }
+
         this.allMachines.push(newMachine);
         return newMachine;
     },
@@ -36,9 +57,16 @@ Machines = {
     },
 
     update: function(deltaTime) {
-        var increase = 0;
+        var increase = {
+            'energy'  : 0,
+            'matter'  : 0,
+            'currency': 0
+        };
         for (var i = 0; i < this.allMachines.length; i++) {
-            increase += this.allMachines[i].update(deltaTime);
+            delta = this.allMachines[i].update(deltaTime);
+            increase.energy += delta.energy;
+            increase.matter += delta.matter;
+            increase.currency += delta.currency;
         }
         return increase;
     }

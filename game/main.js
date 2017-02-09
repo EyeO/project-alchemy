@@ -2,23 +2,23 @@
 $.when(
     $.getScript('game/misc.js'),
     $.getScript('game/model/Machine.js'),
-    $.getScript('game/model/EnergyCollector.js'),
+    $.getScript('game/model/MachineTypes.js'),
     $.Deferred(function(deferred){
         $(deferred.resolve);
     })
 ).done(function() {
 
     //Game loop
-    var lastTime = Date.now();
-    var lagCorrection = false;
-    var updateInterval = 100;
+    var lastTime = Date.now(),
+        lagCorrection = false,
+        updateInterval = 100;
 
     function gameLoop() {
         var deltaTime = lagCorrection ? Date.now() - lastTime : updateInterval;
         if (lagCorrection) {
             lastTime = Date.now();
         }
-        updateResources({'energyRate': Machines.update(deltaTime)});
+        updateResources(Machines.update(deltaTime));
     }
     setInterval(gameLoop, updateInterval);
 
@@ -30,22 +30,22 @@ $.when(
         energyRate = 0;
 
     //Update resources
-    function updateResources(deltaResource) {
-        energy += deltaResource.energyRate;
-        energyRate = deltaResource.energyRate * 1000 / updateInterval;
+    function updateResources(delta) {
+        energy += delta.energy;
+        energyRate = delta.energy * 1000 / updateInterval;
+        matter += delta.matter;
+        matterRate = delta.matter * 1000 / updateInterval;
 
         $('.current-energy').html(formatNumber(energy));
         $('.current-energyRate').html(formatNumber(energyRate));
+        $('.current-matter').html(formatNumber(matter));
+        $('.current-matterRate').html(formatNumber(matterRate));
     }
 
+    //Declare
+    Machines.newMachine('generator', 1, 100, 1000, 'Mine', 20);
 
-
-
-    //Declare solar panels
-    Machines.newEnergyCollector(1, 100, 1000, 'Tier 1 Solar Panel');
-    Machines.newEnergyCollector(2, 500000, 1000000, 'Tier 2 Solar Panel');
-
-    //Purchase 3 solar panels
-    Machines.getMachineByID(2).purchase(100);
+    //Purchase
+    Machines.getMachineByID(1).purchase(1);
 
 });
