@@ -2,7 +2,6 @@
 $.when(
     $.getScript('game/misc.js'),
     $.getScript('game/model/Machine.js'),
-    $.getScript('game/model/Machines.js'),
     $.getScript('game/model/EnergyCollector.js'),
     $.Deferred(function(deferred){
         $(deferred.resolve);
