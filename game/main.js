@@ -42,9 +42,17 @@ $.when(
         $('.current-matterRate').html(formatNumber(matterRate));
     }
 
+    function updateMachineList() {
+        Machines.runFunction( function() {
+          $('.machines ul').append('<li>' + this.name + ' (' + this.type + ')</li>');
+        });
+    }
+
     //Declare
     Machines.newMachine('collector', 0, 100, 1000, 'Solar Panel');
     Machines.newMachine('harvester', 1, 500, 200, 'Mine');
+
+    updateMachineList();
 
     //Purchase
     Machines.getMachineByID(0).purchase(1);

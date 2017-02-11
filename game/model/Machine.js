@@ -1,5 +1,6 @@
 //Declare machine class
-function Machine(id, cost, rate, name) {
+function Machine(type, id, cost, rate, name) {
+    this.type = type;
     this.id = id;
     this.cost = cost;
     this.instances = 0;
@@ -17,7 +18,7 @@ Machines = {
         var newMachine = {};
 
         var controlArgument = arguments[0];
-        controlArgument = [].shift.apply(arguments);
+        //controlArgument = [].shift.apply(arguments);
 
         switch (controlArgument) {
           case 'collector':
