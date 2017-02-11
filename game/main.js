@@ -44,18 +44,22 @@ $.when(
 
     function updateMachineList() {
         Machines.runFunction( function() {
-          $('.machines ul').append('<li>' + this.name + ' (' + this.type + ')</li>');
+          $('.machines ul').append('<li class="purchase ' + this.id + '">' + this.name + ' (' + this.type + ') ['+ this.instances + ']</li>');
         });
     }
+
+    //Purchase
+    $('.purchase').click(function() {
+        console.log(1);
+        var id = $(this).attr('class').split(' ')[1];
+        Machine.getMachineByID(id).purchase(1);
+        updateMachineList();
+    });
 
     //Declare
     Machines.newMachine('collector', 0, 100, 1000, 'Solar Panel');
     Machines.newMachine('harvester', 1, 500, 200, 'Mine');
 
     updateMachineList();
-
-    //Purchase
-    Machines.getMachineByID(0).purchase(1);
-    Machines.getMachineByID(1).purchase(2);
 
 });
