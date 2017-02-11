@@ -43,18 +43,20 @@ $.when(
     }
 
     function updateMachineList() {
+        $('.machines ul').empty();
         Machines.runFunction( function() {
           $('.machines ul').append('<li class="purchase ' + this.id + '">' + this.name + ' (' + this.type + ') ['+ this.instances + ']</li>');
         });
+        bindPurchase();
     }
 
-    //Purchase
-    $('.purchase').click(function() {
-        console.log(1);
-        var id = $(this).attr('class').split(' ')[1];
-        Machine.getMachineByID(id).purchase(1);
-        updateMachineList();
-    });
+    function bindPurchase() {
+        $('.purchase').click(function() {
+            var id = $(this).attr('class').split(' ')[1];
+            Machines.getMachineByID(id).purchase(1);
+            updateMachineList();
+        });
+    }
 
     //Declare
     Machines.newMachine('collector', 0, 100, 1000, 'Solar Panel');
