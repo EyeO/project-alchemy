@@ -1,0 +1,7 @@
+.labour, .research, .upgrades, .storage {
+  color: #CCC;
+}
+
+.purchase {
+  cursor: pointer;
+}
