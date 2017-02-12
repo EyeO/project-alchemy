@@ -1,34 +1,34 @@
-function MatterHarvester(id, cost, rate, name) {
+function MatterHarvester(type, id, cost, rate, name) {
     Machine.apply(this, arguments);
 
     this.update = function(deltaTime) {
-        return new Delta(0, rate, 0, deltaTime, this.instances);
+        return new Delta(0, this.rate, 0, deltaTime, this.instances);
     };
 }
 
-function EnergyGenerator(id, cost, rate, name, matterRate) {
+function EnergyGenerator(type, id, cost, rate, name, rate2) {
     Machine.apply(this, arguments);
-    this.matterRate = matterRate;
+    this.rate2 = rate2;
 
     this.update = function(deltaTime) {
-        return new Delta(rate, -(matterRate), 0, deltaTime, this.instances);
+        return new Delta(this.rate, -(this.rate2), 0, deltaTime, this.instances);
     };
 }
 
-function MassFabricator(id, cost, rate, name, energyRate) {
+function MassFabricator(type, id, cost, rate, name, rate2) {
     Machine.apply(this, arguments);
-    this.energyRate = energyRate;
+    this.rate2 = rate2;
 
     this.update = function(deltaTime) {
-        return new Delta(-(energyRate), rate, 0, deltaTime, this.instances);
+        return new Delta(-(this.rate2), this.rate, 0, deltaTime, this.instances);
     };
 }
 
-function EnergyCollector(id, cost, rate, name) {
+function EnergyCollector(type, id, cost, rate, name) {
     Machine.apply(this, arguments);
 
     this.update = function(deltaTime) {
-        return new Delta(rate, 0, 0, deltaTime, this.instances);
+        return new Delta(this.rate, 0, 0, deltaTime, this.instances);
     };
 }
 

@@ -9,6 +9,7 @@ function Machine(type, id, cost, rate, name) {
 
     this.purchase = function(num) {
         this.instances += num;
+        window.credits -= this.cost;
     };
 }
 
@@ -21,20 +22,20 @@ Machines = {
         //controlArgument = [].shift.apply(arguments);
 
         switch (controlArgument) {
-          case 'collector':
-            EnergyCollector.apply(newMachine, arguments);
-            break;
-          case 'harvester':
-            MatterHarvester.apply(newMachine, arguments);
-            break;
-          case 'fabricator':
-            MassFabricator.apply(newMachine, arguments);
-            break;
-          case 'generator':
-            EnergyGenerator.apply(newMachine, arguments);
-            break;
-          default:
-            throw "Initialisation error: unknown machine type";
+            case 'collector':
+                EnergyCollector.apply(newMachine, arguments);
+                break;
+            case 'harvester':
+                MatterHarvester.apply(newMachine, arguments);
+                break;
+            case 'fabricator':
+                MassFabricator.apply(newMachine, arguments);
+                break;
+            case 'generator':
+                EnergyGenerator.apply(newMachine, arguments);
+                break;
+            default:
+                throw "Initialisation error: unknown machine type";
         }
 
         this.allMachines.push(newMachine);
@@ -59,8 +60,8 @@ Machines = {
 
     update: function(deltaTime) {
         var increase = {
-            'energy'  : 0,
-            'matter'  : 0,
+            'energy': 0,
+            'matter': 0,
             'currency': 0
         };
         for (var i = 0; i < this.allMachines.length; i++) {
