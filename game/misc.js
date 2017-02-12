@@ -14,22 +14,25 @@ function inherit(proto) {
 
 //Format large numbers - http://stackoverflow.com/a/17633552
 var ranges = [
-  { divider: 1e30 , suffix: 'W' },
-  { divider: 1e27 , suffix: 'X' },
-  { divider: 1e24 , suffix: 'Y' },
-  { divider: 1e21 , suffix: 'Z' },
-  { divider: 1e18 , suffix: 'E' },
-  { divider: 1e15 , suffix: 'P' },
-  { divider: 1e12 , suffix: 'T' },
-  { divider: 1e9 , suffix: 'G' },
-  { divider: 1e6 , suffix: 'M' },
-  { divider: 1e3 , suffix: 'k' }
+  { divider: 1e30 , suffix: 'W', money: 'D' },
+  { divider: 1e27 , suffix: 'X', money: 'N' },
+  { divider: 1e24 , suffix: 'Y', money: 'Sp'},
+  { divider: 1e21 , suffix: 'Z', money: 'Sx' },
+  { divider: 1e18 , suffix: 'E', money: 'Qi' },
+  { divider: 1e15 , suffix: 'P', money: 'Qa' },
+  { divider: 1e12 , suffix: 'T', money: 'T' },
+  { divider: 1e9 , suffix: 'G', money: 'B' },
+  { divider: 1e6 , suffix: 'M', money: 'M' },
+  { divider: 1e3 , suffix: 'k', money: 'k' }
 ];
 
-function formatNumber(n) {
+function formatNumber(n, money) {
+  if (n < 0) {
+    return '-' + formatNumber(-n);
+  }
   for (var i = 0; i < ranges.length; i++) {
     if (n >= ranges[i].divider) {
-      return (n / ranges[i].divider).toString() + ranges[i].suffix;
+      return (n / ranges[i].divider).toString() + (typeof money === 'undefined' ? ranges[i].suffix : ranges[i].money);
     }
   }
   return n.toString();
