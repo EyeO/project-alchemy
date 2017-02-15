@@ -71,7 +71,7 @@ $.when(
                     throw "Update error: unknown machine type";
             }
             var stats = '+' + formatNumber(this.rate) + units[0] + (unary ? '' : (', -' + formatNumber(this.rate2) + units[1] ) );
-            $('.machines ul').append('<li class="purchase ' + this.id + '">$' + formatNumber(this.cost,1) + ' - ' + this.name + ' (' + stats + ') [' + this.instances + ' owned]</li>');
+            $('.machines ul').append('<li class="purchase ' + this.id + '">$' + formatNumber(this.cost,1) + ' - <span class="machine-name">' + this.name + ' </span>(' + stats + ') [' + this.instances + ' owned]</li>');
         });
         bindPurchase();
     }
