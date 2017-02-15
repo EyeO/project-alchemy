@@ -1,4 +1,4 @@
-function MatterHarvester(type, id, cost, rate, name) {
+function MatterHarvester(id, name, type, rate, cost) {
     Machine.apply(this, arguments);
 
     this.update = function(deltaTime) {
@@ -6,7 +6,7 @@ function MatterHarvester(type, id, cost, rate, name) {
     };
 }
 
-function EnergyGenerator(type, id, cost, rate, name, rate2) {
+function EnergyGenerator(id, name, type, rate, cost, rate2) {
     Machine.apply(this, arguments);
     this.rate2 = rate2;
 
@@ -15,7 +15,7 @@ function EnergyGenerator(type, id, cost, rate, name, rate2) {
     };
 }
 
-function MassFabricator(type, id, cost, rate, name, rate2) {
+function MassFabricator(id, name, type, rate, cost, rate2) {
     Machine.apply(this, arguments);
     this.rate2 = rate2;
 
@@ -24,7 +24,7 @@ function MassFabricator(type, id, cost, rate, name, rate2) {
     };
 }
 
-function EnergyCollector(type, id, cost, rate, name) {
+function EnergyCollector(id, name, type, rate, cost) {
     Machine.apply(this, arguments);
 
     this.update = function(deltaTime) {

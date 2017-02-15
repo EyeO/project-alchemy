@@ -1,6 +1,7 @@
 //Load scripts - http://stackoverflow.com/a/11803418
 $.when(
     $.getScript('game/misc.js'),
+    $.getScript('game/model/Abstract.js'),
     $.getScript('game/model/Machine.js'),
     $.getScript('game/model/Action.js'),
     $.getScript('game/model/MachineTypes.js'),
@@ -52,7 +53,7 @@ $.when(
 
     function updateMachineList() {
         $('.machines ul').empty();
-        Machines.runFunction(function() {
+        Machines.run(function() {
             var units;
             var unary = true;
             switch (this.type) {
@@ -82,24 +83,24 @@ $.when(
     function bindPurchase() {
         $('.purchase').click(function() {
             var id = $(this).attr('class').split(' ')[1];
-            Machines.getMachineByID(id).purchase(1);
+            Machines.get(id).purchase(1);
             updateMachineList();
         });
     }
 
     function updateLabourList() {
         $('.labour ul').empty();
-        Actions.runFunction(function() {
+        Actions.run(function() {
             var units;
             switch (this.type) {
                 case 'energy':
-                    units = ['','W'];
+                    units = ['', 'W'];
                     break;
                 case 'matter':
-                    units = ['','g'];
+                    units = ['', 'g'];
                     break;
                 case 'credits':
-                    units = ['$',''];
+                    units = ['$', ''];
                     break;
                 default:
                     throw "Update error: unknown resource type";
@@ -113,17 +114,17 @@ $.when(
     function bindLabour() {
         $('.perform').click(function() {
             var id = $(this).attr('class').split(' ')[1];
-            Actions.getActionByID(id).perform();
+            Actions.get(id).perform();
         });
     }
 
     //Declare
-    Machines.newMachine('collector', 0, 100, 1000, 'Solar Panel');
-    Machines.newMachine('harvester', 1, 500, 200, 'Mine');
-    Machines.newMachine('generator', 2, 1000000, 1000000, 'Nuclear Reactor', 10);
-    Machines.newMachine('fabricator', 3, 10000000, 1000, 'Generic Mass Fabricator', 100000);
+    Machines.new(0, 'Solar Panel', 'collector', 1000, 100);
+    Machines.new(1, 'Mine', 'harvester', 200, 500);
+    Machines.new(2, 'Nuclear Reactor', 'generator', 1000000, 1000000, 10);
+    Machines.new(3, 'Generic Mass Fabricator', 'fabricator', 1000, 10000000, 100000);
 
-    Actions.newAction('credits', 0, 1000, 'Bank Robbery');
+    Actions.new(0, 'Bank Robbery', 'credits', 1000);
 
     updateLabourList();
     updateMachineList();
