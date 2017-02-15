@@ -32,7 +32,7 @@ function formatNumber(n, money) {
   }
   for (var i = 0; i < ranges.length; i++) {
     if (n >= ranges[i].divider) {
-      return (n / ranges[i].divider).toFixed(3).toString() + (typeof money === 'undefined' ? ranges[i].suffix : ranges[i].money);
+      return parseFloat((n / ranges[i].divider).toFixed(3).toString()) + (typeof money === 'undefined' ? ranges[i].suffix : ranges[i].money);
     }
   }
   return n.toString();
