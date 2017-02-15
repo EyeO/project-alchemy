@@ -105,7 +105,7 @@ $.when(
                 default:
                     throw "Update error: unknown resource type";
             }
-            var stats = '+' + units[0] + formatNumber(this.strength) + units[1];
+            var stats = '+' + units[0] + formatNumber(this.rate) + units[1];
             $('.labour ul').append('<li class="perform ' + this.id + '">' + this.name + ' </span>(' + stats + ')</li>');
         });
         bindLabour();

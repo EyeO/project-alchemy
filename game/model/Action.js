@@ -1,10 +1,8 @@
-function Action(id, name, resource, strength) {
+function Action(id, name, resource, rate) {
    Abstract.apply(this, arguments);
 
-   this.strength = strength;
-
    this.perform = function() {
-       window.resources[this.type] += strength;
+       window.resources[this.type] += this.rate;
    };
 }
 

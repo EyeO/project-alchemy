@@ -1,7 +1,8 @@
-function Abstract(id, name, type) {
+function Abstract(id, name, type, rate) {
     this.id = id;
     this.name = name;
     this.type = type;
+    this.rate = rate;
 }
 
 function AbstractFactory(createFunction) {

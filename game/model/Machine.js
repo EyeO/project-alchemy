@@ -1,5 +1,5 @@
 //Declare machine class
-function Machine(id, name, type, cost, rate) {
+function Machine(id, name, type, rate, cost) {
     Abstract.apply(this, arguments);
 
     this.cost = cost;
