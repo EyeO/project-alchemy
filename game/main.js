@@ -2,6 +2,7 @@
 $.when(
     $.getScript('game/misc.js'),
     $.getScript('game/model/Machine.js'),
+    $.getScript('game/model/Action.js'),
     $.getScript('game/model/MachineTypes.js'),
     $.Deferred(function(deferred) {
         $(deferred.resolve);
@@ -23,28 +24,30 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     //Variables
-    window.credits = 100;
-    var creditsRate = 0,
-        matterRate = 0,
-        matter = 0,
-        energy = 0;
-    energyRate = 0;
+    window.resources = {
+        energy: 0,
+        matter: 0,
+        credits: 100,
+        energyRate: 0,
+        matterRate: 0,
+        creditsRate: 0
+    };
 
     //Update resources
     function updateResources(delta) {
-        energy += delta.energy;
-        energyRate = delta.energy * 1000 / updateInterval;
-        matter += delta.matter;
-        matterRate = delta.matter * 1000 / updateInterval;
-        window.credits += delta.currency;
-        creditsRate = delta.currency * 1000 / updateInterval;
+        window.resources.energy += delta.energy;
+        window.resources.energyRate = delta.energy * 1000 / updateInterval;
+        window.resources.matter += delta.matter;
+        window.resources.matterRate = delta.matter * 1000 / updateInterval;
+        window.resources.credits += delta.currency;
+        window.resources.creditsRate = delta.currency * 1000 / updateInterval;
 
-        $('.current-energy').html(formatNumber(energy));
-        $('.current-energyRate').html(formatNumber(energyRate));
-        $('.current-matter').html(formatNumber(matter));
-        $('.current-matterRate').html(formatNumber(matterRate));
-        $('.current-credits').html(formatNumber(window.credits,1));
-        $('.current-creditsRate').html(formatNumber(creditsRate,1));
+        $('.current-energy').html(formatNumber(window.resources.energy));
+        $('.current-energyRate').html(formatNumber(window.resources.energyRate));
+        $('.current-matter').html(formatNumber(window.resources.matter));
+        $('.current-matterRate').html(formatNumber(window.resources.matterRate));
+        $('.current-credits').html(formatNumber(window.resources.credits, 1));
+        $('.current-creditsRate').html(formatNumber(window.resources.creditsRate, 1));
     }
 
     function updateMachineList() {
@@ -60,18 +63,18 @@ $.when(
                     units = ['g/s'];
                     break;
                 case 'fabricator':
-                    units = ['g/s','W'];
+                    units = ['g/s', 'W'];
                     unary = false;
                     break;
                 case 'generator':
-                    units = ['W','g/s'];
+                    units = ['W', 'g/s'];
                     unary = false;
                     break;
                 default:
                     throw "Update error: unknown machine type";
             }
-            var stats = '+' + formatNumber(this.rate) + units[0] + (unary ? '' : (', -' + formatNumber(this.rate2) + units[1] ) );
-            $('.machines ul').append('<li class="purchase ' + this.id + '">$' + formatNumber(this.cost,1) + ' - <span class="machine-name">' + this.name + ' </span>(' + stats + ') [' + this.instances + ' owned]</li>');
+            var stats = '+' + formatNumber(this.rate) + units[0] + (unary ? '' : (', -' + formatNumber(this.rate2) + units[1]));
+            $('.machines ul').append('<li class="purchase ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="machine-name">' + this.name + ' </span>(' + stats + ') [' + this.instances + ' owned]</li>');
         });
         bindPurchase();
     }
@@ -84,12 +87,45 @@ $.when(
         });
     }
 
+    function updateLabourList() {
+        $('.labour ul').empty();
+        Actions.runFunction(function() {
+            var units;
+            switch (this.type) {
+                case 'energy':
+                    units = ['','W'];
+                    break;
+                case 'matter':
+                    units = ['','g'];
+                    break;
+                case 'credits':
+                    units = ['$',''];
+                    break;
+                default:
+                    throw "Update error: unknown resource type";
+            }
+            var stats = '+' + units[0] + formatNumber(this.strength) + units[1];
+            $('.labour ul').append('<li class="perform ' + this.id + '">' + this.name + ' </span>(' + stats + ')</li>');
+        });
+        bindLabour();
+    }
+
+    function bindLabour() {
+        $('.perform').click(function() {
+            var id = $(this).attr('class').split(' ')[1];
+            Actions.getActionByID(id).perform();
+        });
+    }
+
     //Declare
     Machines.newMachine('collector', 0, 100, 1000, 'Solar Panel');
     Machines.newMachine('harvester', 1, 500, 200, 'Mine');
     Machines.newMachine('generator', 2, 1000000, 1000000, 'Nuclear Reactor', 10);
-    Machines.newMachine('fabricator',3, 10000000, 1000, 'Generic Mass Fabricator', 100000);
+    Machines.newMachine('fabricator', 3, 10000000, 1000, 'Generic Mass Fabricator', 100000);
 
+    Actions.newAction('credits', 0, 1000, 'Bank Robbery');
+
+    updateLabourList();
     updateMachineList();
 
 });

@@ -9,7 +9,7 @@ function Machine(type, id, cost, rate, name) {
 
     this.purchase = function(num) {
         this.instances += num;
-        window.credits -= this.cost;
+        window.resources.credits -= this.cost;
     };
 }
 
