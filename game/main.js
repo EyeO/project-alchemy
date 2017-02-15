@@ -23,7 +23,7 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     //Variables
-    window.credits = 0;
+    window.credits = 100;
     var creditsRate = 0,
         matterRate = 0,
         matter = 0,
@@ -71,7 +71,7 @@ $.when(
                     throw "Update error: unknown machine type";
             }
             var stats = '+' + formatNumber(this.rate) + units[0] + (unary ? '' : (', -' + formatNumber(this.rate2) + units[1] ) );
-            $('.machines ul').append('<li class="purchase ' + this.id + '">' + this.name + ' (' + stats + ') [' + this.instances + ' owned]</li>');
+            $('.machines ul').append('<li class="purchase ' + this.id + '">$' + formatNumber(this.cost,1) + ' - ' + this.name + ' (' + stats + ') [' + this.instances + ' owned]</li>');
         });
         bindPurchase();
     }
