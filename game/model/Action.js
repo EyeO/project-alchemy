@@ -3,6 +3,10 @@ function Action(id, name, type, amount) {
 
     this.perform = function() {
         window.resources[this.type] += this.rate;
+        if( window.resources[this.type] > window.resources[this.type + 'Capacity']) {
+            window.resources[this.type] = window.resources[this.type + 'Capacity'];
+            alert(this.type + ' capacity full');
+        }
     };
 }
 
