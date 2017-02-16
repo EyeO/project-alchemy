@@ -4,6 +4,7 @@ $.when(
     $.getScript('game/model/Abstract.js'),
     $.getScript('game/model/Machine.js'),
     $.getScript('game/model/Action.js'),
+    $.getScript('game/model/Storage.js'),
     $.getScript('game/model/MachineTypes.js'),
     $.Deferred(function(deferred) {
         $(deferred.resolve);
@@ -29,26 +30,34 @@ $.when(
         energy: 0,
         matter: 0,
         credits: 100,
+
         energyRate: 0,
         matterRate: 0,
-        creditsRate: 0
+        creditsRate: 0,
+
+        energyCapacity: 1000
     };
 
     //Update resources
     function updateResources(delta) {
         window.resources.energy += delta.energy;
         window.resources.energyRate = delta.energy * 1000 / updateInterval;
+
         window.resources.matter += delta.matter;
         window.resources.matterRate = delta.matter * 1000 / updateInterval;
+
         window.resources.credits += delta.currency;
         window.resources.creditsRate = delta.currency * 1000 / updateInterval;
 
-        $('.current-energy').html(formatNumber(window.resources.energy));
-        $('.current-energyRate').html(formatNumber(window.resources.energyRate));
-        $('.current-matter').html(formatNumber(window.resources.matter));
-        $('.current-matterRate').html(formatNumber(window.resources.matterRate));
-        $('.current-credits').html(formatNumber(window.resources.credits, 1));
-        $('.current-creditsRate').html(formatNumber(window.resources.creditsRate, 1));
+        $('.current-energy').html(formatNumber(window.resources.energy)+'J');
+        $('.current-energyRate').html(formatNumber(window.resources.energyRate)+'W');
+        $('.current-energyCapacity').html(formatNumber(window.resources.energyCapacity)+'J');
+
+        $('.current-matter').html(formatNumber(window.resources.matter)+'g');
+        $('.current-matterRate').html(formatNumber(window.resources.matterRate)+'g/s');
+
+        $('.current-credits').html('$'+formatNumber(window.resources.credits, 1));
+        $('.current-creditsRate').html('$'+formatNumber(window.resources.creditsRate, 1)+'/s');
     }
 
     function updateMachineList() {
@@ -67,18 +76,33 @@ $.when(
         });
     }
 
-    function updateLabourList() {
+    function updateActionList() {
         $('.labour ul').empty();
         Actions.run(function() {
-            $('.labour ul').append('<li class="perform ' + this.id + '">' + this.name + ' </span>(' + this.stats() + ')</li>');
+            $('.labour ul').append('<li class="perform ' + this.id + '">' + this.name + ' (' + this.stats() + ')</li>');
         });
-        bindLabour();
+        bindPerform();
     }
 
-    function bindLabour() {
+    function bindPerform() {
         $('.perform').click(function() {
             var id = $(this).attr('class').split(' ')[1];
             Actions.get(id).perform();
+        });
+    }
+
+    function updateStorageList() {
+        $('.storage ul').empty();
+        Storages.run(function() {
+            $('.storage ul').append('<li class="purchase-storage ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="machine-name">' + this.name + ' </span>(' + this.stats() + ')</li>');
+        });
+        bindPurchaseStorage();
+    }
+
+    function bindPurchaseStorage() {
+        $('.purchase-storage').click(function() {
+            var id = $(this).attr('class').split(' ')[1];
+            Storages.get(id).purchase(1);
         });
     }
 
@@ -90,7 +114,10 @@ $.when(
 
     Actions.new(0, 'Bank Robbery', 'credits', 1000);
 
-    updateLabourList();
+    Storages.new(0, 'Basic Capacitor', 'energy', 1000000, 100);
+
+    updateActionList();
     updateMachineList();
+    updateStorageList();
 
 });

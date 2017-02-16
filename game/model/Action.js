@@ -1,4 +1,4 @@
-function Action(id, name, resource, rate) {
+function Action(id, name, type, amount) {
     Abstract.apply(this, arguments);
 
     this.perform = function() {

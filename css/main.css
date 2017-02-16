@@ -1,8 +1,8 @@
-.research, .upgrades, .storage {
+.research, .upgrades {
   color: #CCC;
 }
 
-.purchase, .perform {
+.purchase, .perform, .purchase-storage {
   cursor: pointer;
 }
 

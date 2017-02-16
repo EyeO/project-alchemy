@@ -4,7 +4,6 @@ function Machine(id, name, type, rate, cost) {
 
     this.cost = cost;
     this.instances = 0;
-    this.rate = rate;
 
     this.purchase = function(num) {
         if (window.resources.credits - num * this.cost >= 0) {
