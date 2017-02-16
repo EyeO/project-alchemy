@@ -54,28 +54,7 @@ $.when(
     function updateMachineList() {
         $('.machines ul').empty();
         Machines.run(function() {
-            var units;
-            var unary = true;
-            switch (this.type) {
-                case 'collector':
-                    units = ['W'];
-                    break;
-                case 'harvester':
-                    units = ['g/s'];
-                    break;
-                case 'fabricator':
-                    units = ['g/s', 'W'];
-                    unary = false;
-                    break;
-                case 'generator':
-                    units = ['W', 'g/s'];
-                    unary = false;
-                    break;
-                default:
-                    throw "Update error: unknown machine type";
-            }
-            var stats = '+' + formatNumber(this.rate) + units[0] + (unary ? '' : (', -' + formatNumber(this.rate2) + units[1]));
-            $('.machines ul').append('<li class="purchase ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="machine-name">' + this.name + ' </span>(' + stats + ') [' + this.instances + ' owned]</li>');
+            $('.machines ul').append('<li class="purchase ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="machine-name">' + this.name + ' </span>(' + this.stats() + ') [' + this.instances + ' owned]</li>');
         });
         bindPurchase();
     }
@@ -91,22 +70,7 @@ $.when(
     function updateLabourList() {
         $('.labour ul').empty();
         Actions.run(function() {
-            var units;
-            switch (this.type) {
-                case 'energy':
-                    units = ['', 'W'];
-                    break;
-                case 'matter':
-                    units = ['', 'g'];
-                    break;
-                case 'credits':
-                    units = ['$', ''];
-                    break;
-                default:
-                    throw "Update error: unknown resource type";
-            }
-            var stats = '+' + units[0] + formatNumber(this.rate) + units[1];
-            $('.labour ul').append('<li class="perform ' + this.id + '">' + this.name + ' </span>(' + stats + ')</li>');
+            $('.labour ul').append('<li class="perform ' + this.id + '">' + this.name + ' </span>(' + this.stats() + ')</li>');
         });
         bindLabour();
     }

@@ -18,7 +18,6 @@ Machines = new AbstractFactory(function() {
     var newMachine = {};
 
     var controlArgument = arguments[2];
-    //controlArgument = [].shift.apply(arguments);
 
     switch (controlArgument) {
         case 'collector':
@@ -40,6 +39,7 @@ Machines = new AbstractFactory(function() {
     this.all.push(newMachine);
     return newMachine;
 });
+
 Machines.prototype = inherit(AbstractFactory.prototype);
 
 Machines.update = function(deltaTime) {
