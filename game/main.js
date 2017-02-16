@@ -29,7 +29,7 @@ $.when(
     window.resources = {
         energy: 0,
         matter: 0,
-        credits: 100,
+        credits: 1000000,
 
         energyRate: 0,
         matterRate: 0,
@@ -117,6 +117,7 @@ $.when(
     Machines.new(3, 'Generic Mass Fabricator', 'fabricator', 1000, 10000000, 100000);
 
     Actions.new(0, 'Bank Robbery', 'credits', 1000);
+    Actions.new(1, 'Mt Gox Theft', 'credits', 100000000);
 
     Storages.new(0, 'Basic Capacitor', 'energy', 1000000, 100);
     Storages.new(1, 'Business Account', 'credits', 1000000000, 10000);
