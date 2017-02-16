@@ -7,8 +7,13 @@ function Machine(id, name, type, rate, cost) {
     this.rate = rate;
 
     this.purchase = function(num) {
-        this.instances += num;
-        window.resources.credits -= this.cost;
+        if (window.resources.credits - num * this.cost >= 0) {
+            this.instances += num;
+            window.resources.credits -= this.cost;
+        }
+        else {
+            alert('Insufficient credits');
+        }
     };
 }
 
