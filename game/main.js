@@ -27,9 +27,9 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     function updateResourceRate() {
-        $('.current-energyRate').html(formatNumber((window.resources.energy-window.resources.energyPrev)*rateInterval/1000) + 'W');
-        $('.current-matterRate').html(formatNumber((window.resources.matter-window.resources.matterPrev)*rateInterval/1000) + 'g/s');
-        $('.current-creditsRate').html('$' + formatNumber((window.resources.credits-window.resources.creditsPrev)*rateInterval/1000, 1) + '/s');
+        $('.current-energyRate').html(formatNumber((window.resources.energy-window.resources.energyPrev)*1000/rateInterval) + 'W');
+        $('.current-matterRate').html(formatNumber((window.resources.matter-window.resources.matterPrev)*1000/rateInterval) + 'g/s');
+        $('.current-creditsRate').html('$' + formatNumber((window.resources.credits-window.resources.creditsPrev)*1000/rateInterval, 1) + '/s');
         window.resources.energyPrev = window.resources.energy;
         window.resources.matterPrev = window.resources.matter;
         window.resources.creditsPrev = window.resources.credits;
@@ -53,12 +53,12 @@ $.when(
 
     //Update resources
     function updateResources(delta) {
-        /*if(window.resources.energy + delta.energy > window.resources.energyCapacity) {
+        if(window.resources.energy + delta.energy > window.resources.energyCapacity) {
             delta.energy = window.resources.energyCapacity - window.resources.energy;
         }
         if(window.resources.matter + delta.matter > window.resources.matterCapacity) {
             delta.matter = window.resources.matterCapacity - window.resources.matter;
-        }*/
+        }
 
         window.resources.energy += delta.energy;
         window.resources.energyRate = delta.energy * 1000 / updateInterval;
