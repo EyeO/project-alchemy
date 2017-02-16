@@ -35,7 +35,9 @@ $.when(
         matterRate: 0,
         creditsRate: 0,
 
-        energyCapacity: 1000
+        energyCapacity: 1000,
+        matterCapacity: 1000000,
+        creditsCapacity: 1000000
     };
 
     //Update resources
@@ -49,15 +51,17 @@ $.when(
         window.resources.credits += delta.currency;
         window.resources.creditsRate = delta.currency * 1000 / updateInterval;
 
-        $('.current-energy').html(formatNumber(window.resources.energy)+'J');
-        $('.current-energyRate').html(formatNumber(window.resources.energyRate)+'W');
-        $('.current-energyCapacity').html(formatNumber(window.resources.energyCapacity)+'J');
+        $('.current-energy').html(formatNumber(window.resources.energy) + 'J');
+        $('.current-energyRate').html(formatNumber(window.resources.energyRate) + 'W');
+        $('.current-energyCapacity').html(formatNumber(window.resources.energyCapacity) + 'J');
 
-        $('.current-matter').html(formatNumber(window.resources.matter)+'g');
-        $('.current-matterRate').html(formatNumber(window.resources.matterRate)+'g/s');
+        $('.current-matter').html(formatNumber(window.resources.matter) + 'g');
+        $('.current-matterRate').html(formatNumber(window.resources.matterRate) + 'g/s');
+        $('.current-matterCapacity').html(formatNumber(window.resources.matterCapacity) + 'g');
 
-        $('.current-credits').html('$'+formatNumber(window.resources.credits, 1));
-        $('.current-creditsRate').html('$'+formatNumber(window.resources.creditsRate, 1)+'/s');
+        $('.current-credits').html('$' + formatNumber(window.resources.credits, 1));
+        $('.current-creditsRate').html('$' + formatNumber(window.resources.creditsRate, 1) + '/s');
+        $('.current-creditsCapacity').html('$' + formatNumber(window.resources.creditsCapacity, 1));
     }
 
     function updateMachineList() {
@@ -115,6 +119,7 @@ $.when(
     Actions.new(0, 'Bank Robbery', 'credits', 1000);
 
     Storages.new(0, 'Basic Capacitor', 'energy', 1000000, 100);
+    Storages.new(1, 'Business Account', 'credits', 1000000000, 10000);
 
     updateActionList();
     updateMachineList();

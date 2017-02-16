@@ -11,7 +11,7 @@ function Abstract(id, name, type, rate) {
             case 'matter':
                 return '+' + formatNumber(this.rate) + 'g';
             case 'credits':
-                return '+$' + formatNumber(this.rate);
+                return '+$' + formatNumber(this.rate, 1);
 
             case 'collector':
                 return '+' + formatNumber(this.rate) + 'W';

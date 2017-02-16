@@ -7,8 +7,7 @@ function Storage(id, name, type, amount, cost) {
         if (window.resources.credits - num * this.cost >= 0) {
             window.resources[this.type + 'Capacity'] += this.rate;
             window.resources.credits -= this.cost;
-        }
-        else {
+        } else {
             alert('Insufficient credits');
         }
     };
