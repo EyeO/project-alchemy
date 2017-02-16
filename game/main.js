@@ -27,56 +27,41 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     function updateResourceRate() {
-        $('.current-energyRate').html(formatNumber((window.resources.energy-window.resources.energyPrev)*1000/rateInterval) + 'W');
-        $('.current-matterRate').html(formatNumber((window.resources.matter-window.resources.matterPrev)*1000/rateInterval) + 'g/s');
-        $('.current-creditsRate').html('$' + formatNumber((window.resources.credits-window.resources.creditsPrev)*1000/rateInterval, 1) + '/s');
-        window.resources.energyPrev = window.resources.energy;
-        window.resources.matterPrev = window.resources.matter;
-        window.resources.creditsPrev = window.resources.credits;
+        $('.current-energyRate').html(formatNumber((resources.e-resources.ePrev)*1000/rateInterval) + 'W');
+        $('.current-matterRate').html(formatNumber((resources.m-resources.mPrev)*1000/rateInterval) + 'g/s');
+        $('.current-creditsRate').html('$' + formatNumber((resources.c-resources.cPrev)*1000/rateInterval, 1) + '/s');
+        resources.ePrev = resources.e;
+        resources.mPrev = resources.m;
+        resources.cPrev = resources.c;
     }
     setInterval(updateResourceRate, rateInterval);
 
-    //Variables
-    window.resources = {
-        energy: 0,
-        matter: 0,
-        credits: 1000000,
-
-        energyPrev: 0,
-        matterPrev: 0,
-        creditsPrev: 0,
-
-        energyCapacity: 0,
-        matterCapacity: 0,
-        creditsCapacity: 1000000
-    };
-
     //Update resources
     function updateResources(delta) {
-        if(window.resources.energy + delta.energy > window.resources.energyCapacity) {
-            delta.energy = window.resources.energyCapacity - window.resources.energy;
+        if(resources.e + delta.energy > resources.eCap) {
+            delta.energy = resources.eCap - resources.e;
         }
-        if(window.resources.matter + delta.matter > window.resources.matterCapacity) {
-            delta.matter = window.resources.matterCapacity - window.resources.matter;
+        if(resources.m + delta.matter > resources.mCap) {
+            delta.matter = resources.mCap - resources.m;
         }
 
-        window.resources.energy += delta.energy;
-        window.resources.energyRate = delta.energy * 1000 / updateInterval;
+        resources.e += delta.energy;
+        resources.eRate = delta.energy * 1000 / updateInterval;
 
-        window.resources.matter += delta.matter;
-        window.resources.matterRate = delta.matter * 1000 / updateInterval;
+        resources.m += delta.matter;
+        resources.mRate = delta.matter * 1000 / updateInterval;
 
-        /*window.resources.credits += delta.currency;
-        window.resources.creditsRate = delta.currency * 1000 / updateInterval;*/
+        /*resources.c += delta.currency;
+        resources.cRate = delta.currency * 1000 / updateInterval;*/
 
-        $('.current-energy').html(formatNumber(window.resources.energy) + 'J');
-        $('.current-energyCapacity').html(formatNumber(window.resources.energyCapacity) + 'J');
+        $('.current-energy').html(formatNumber(resources.e) + 'J');
+        $('.current-energyCapacity').html(formatNumber(resources.eCap) + 'J');
 
-        $('.current-matter').html(formatNumber(window.resources.matter) + 'g');
-        $('.current-matterCapacity').html(formatNumber(window.resources.matterCapacity) + 'g');
+        $('.current-matter').html(formatNumber(resources.m) + 'g');
+        $('.current-matterCapacity').html(formatNumber(resources.mCap) + 'g');
 
-        $('.current-credits').html('$' + formatNumber(window.resources.credits, 1));
-        $('.current-creditsCapacity').html('$' + formatNumber(window.resources.creditsCapacity, 1));
+        $('.current-credits').html('$' + formatNumber(resources.c, 1));
+        $('.current-creditsCapacity').html('$' + formatNumber(resources.cCap, 1));
     }
 
     function updateMachineList() {
@@ -131,13 +116,13 @@ $.when(
     Machines.new(2, 'Nuclear Reactor', 'generator', 1000000, 1000000, 10);
     Machines.new(3, 'Generic Mass Fabricator', 'fabricator', 1000, 10000000, 100000);
 
-    Actions.new(0, 'Bank Robbery', 'credits', 1000);
-    Actions.new(1, 'Mt Gox Theft', 'credits', 100000000);
-    Actions.new(2, 'Human Power', 'energy', 75);
+    Actions.new(0, 'Bank Robbery', 'c', 1000);
+    Actions.new(1, 'Mt Gox Theft', 'c', 100000000);
+    Actions.new(2, 'Human Power', 'e', 75);
 
-    Storages.new(0, 'Basic Capacitor', 'energy', 1000000, 100);
-    Storages.new(1, 'Business Account', 'credits', 1000000000, 10000);
-    Storages.new(2, 'Warehouse', 'matter', 100000000, 100000);
+    Storages.new(0, 'Basic Capacitor', 'e', 1000000, 100);
+    Storages.new(1, 'Business Account', 'c', 1000000000, 10000);
+    Storages.new(2, 'Warehouse', 'm', 100000000, 100000);
 
     updateActionList();
     updateMachineList();

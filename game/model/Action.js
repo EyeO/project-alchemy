@@ -2,9 +2,9 @@ function Action(id, name, type, amount) {
     Abstract.apply(this, arguments);
 
     this.perform = function() {
-        window.resources[this.type] += this.rate;
-        if( window.resources[this.type] > window.resources[this.type + 'Capacity']) {
-            window.resources[this.type] = window.resources[this.type + 'Capacity'];
+        resources[this.type] += this.rate;
+        if( resources[this.type] > resources[this.type + 'Cap']) {
+            resources[this.type] = resources[this.type + 'Cap'];
             //alert(this.type + ' capacity full');
         }
     };

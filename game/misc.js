@@ -1,4 +1,18 @@
-//Delta object TODO: write description
+//Variables
+resources = {
+    e: 0,
+    m: 0,
+    c: 1000000,
+
+    ePrev: 0,
+    mPrev: 0,
+    cPrev: 0,
+
+    eCap: 0,
+    mCap: 0,
+    cCap: 1000000
+};
+
 function Delta(e, m, c, deltaTime, instances) {
     this.energy = e * deltaTime * instances / 1000;
     this.matter = m * deltaTime * instances / 1000;

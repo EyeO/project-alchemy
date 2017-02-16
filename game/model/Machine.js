@@ -6,9 +6,9 @@ function Machine(id, name, type, rate, cost) {
     this.instances = 0;
 
     this.purchase = function(num) {
-        if (window.resources.credits - num * this.cost >= 0) {
+        if (resources.c - num * this.cost >= 0) {
             this.instances += num;
-            window.resources.credits -= this.cost;
+            resources.c -= this.cost;
         } else {
             alert('Insufficient credits');
         }

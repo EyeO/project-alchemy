@@ -11,7 +11,7 @@ function EnergyGenerator(id, name, type, rate, cost, rate2) {
     this.rate2 = rate2;
 
     this.update = function(deltaTime) {
-        if (window.resources.matter > this.rate2 * this.instances * deltaTime / 1000 && window.resources.energy < window.resources.energyCapacity) {
+        if (resources.m > this.rate2 * this.instances * deltaTime / 1000 && resources.e < resources.eCap) {
             return new Delta(this.rate, -(this.rate2), 0, deltaTime, this.instances);
         } else {
             return new Delta(0, 0, 0, deltaTime, this.instances);
@@ -24,7 +24,7 @@ function MassFabricator(id, name, type, rate, cost, rate2) {
     this.rate2 = rate2;
 
     this.update = function(deltaTime) {
-        if (window.resources.energy > this.rate2 * this.instances * deltaTime / 1000 && window.resources.matter < window.resources.matterCapacity) {
+        if (resources.e > this.rate2 * this.instances * deltaTime / 1000 && resources.m < resources.mCap) {
             return new Delta(-(this.rate2), this.rate, 0, deltaTime, this.instances);
         } else {
             return new Delta(0, 0, 0, deltaTime, this.instances);

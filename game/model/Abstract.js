@@ -6,11 +6,11 @@ function Abstract(id, name, type, rate) {
 
     this.stats = function() {
         switch (this.type) {
-            case 'energy':
+            case 'e':
                 return '+' + formatNumber(this.rate) + 'J';
-            case 'matter':
+            case 'm':
                 return '+' + formatNumber(this.rate) + 'g';
-            case 'credits':
+            case 'c':
                 return '+$' + formatNumber(this.rate, 1);
 
             case 'collector':
