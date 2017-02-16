@@ -14,7 +14,8 @@ $.when(
     //Game loop
     var lastTime = Date.now(),
         lagCorrection = false,
-        updateInterval = 100;
+        updateInterval = 100,
+        rateInterval = 1000;
 
     function gameLoop() {
         var deltaTime = lagCorrection ? Date.now() - lastTime : updateInterval;
@@ -25,42 +26,56 @@ $.when(
     }
     setInterval(gameLoop, updateInterval);
 
+    function updateResourceRate() {
+        $('.current-energyRate').html(formatNumber((window.resources.energy-window.resources.energyPrev)*rateInterval/1000) + 'W');
+        $('.current-matterRate').html(formatNumber((window.resources.matter-window.resources.matterPrev)*rateInterval/1000) + 'g/s');
+        $('.current-creditsRate').html('$' + formatNumber((window.resources.credits-window.resources.creditsPrev)*rateInterval/1000, 1) + '/s');
+        window.resources.energyPrev = window.resources.energy;
+        window.resources.matterPrev = window.resources.matter;
+        window.resources.creditsPrev = window.resources.credits;
+    }
+    setInterval(updateResourceRate, rateInterval);
+
     //Variables
     window.resources = {
         energy: 0,
         matter: 0,
         credits: 1000000,
 
-        energyRate: 0,
-        matterRate: 0,
-        creditsRate: 0,
+        energyPrev: 0,
+        matterPrev: 0,
+        creditsPrev: 0,
 
-        energyCapacity: 1000,
+        energyCapacity: 1000000,
         matterCapacity: 1000000,
         creditsCapacity: 1000000
     };
 
     //Update resources
     function updateResources(delta) {
+        /*if(window.resources.energy + delta.energy > window.resources.energyCapacity) {
+            delta.energy = window.resources.energyCapacity - window.resources.energy;
+        }
+        if(window.resources.matter + delta.matter > window.resources.matterCapacity) {
+            delta.matter = window.resources.matterCapacity - window.resources.matter;
+        }*/
+
         window.resources.energy += delta.energy;
         window.resources.energyRate = delta.energy * 1000 / updateInterval;
 
         window.resources.matter += delta.matter;
         window.resources.matterRate = delta.matter * 1000 / updateInterval;
 
-        window.resources.credits += delta.currency;
-        window.resources.creditsRate = delta.currency * 1000 / updateInterval;
+        /*window.resources.credits += delta.currency;
+        window.resources.creditsRate = delta.currency * 1000 / updateInterval;*/
 
         $('.current-energy').html(formatNumber(window.resources.energy) + 'J');
-        $('.current-energyRate').html(formatNumber(window.resources.energyRate) + 'W');
         $('.current-energyCapacity').html(formatNumber(window.resources.energyCapacity) + 'J');
 
         $('.current-matter').html(formatNumber(window.resources.matter) + 'g');
-        $('.current-matterRate').html(formatNumber(window.resources.matterRate) + 'g/s');
         $('.current-matterCapacity').html(formatNumber(window.resources.matterCapacity) + 'g');
 
         $('.current-credits').html('$' + formatNumber(window.resources.credits, 1));
-        $('.current-creditsRate').html('$' + formatNumber(window.resources.creditsRate, 1) + '/s');
         $('.current-creditsCapacity').html('$' + formatNumber(window.resources.creditsCapacity, 1));
     }
 
@@ -111,7 +126,7 @@ $.when(
     }
 
     //Declare
-    Machines.new(0, 'Solar Panel', 'collector', 1000, 100);
+    Machines.new(0, 'Solar Panel', 'collector', 100000, 100);
     Machines.new(1, 'Mine', 'harvester', 200, 500);
     Machines.new(2, 'Nuclear Reactor', 'generator', 1000000, 1000000, 10);
     Machines.new(3, 'Generic Mass Fabricator', 'fabricator', 1000, 10000000, 100000);
