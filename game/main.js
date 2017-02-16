@@ -46,8 +46,8 @@ $.when(
         matterPrev: 0,
         creditsPrev: 0,
 
-        energyCapacity: 1000000,
-        matterCapacity: 1000000,
+        energyCapacity: 0,
+        matterCapacity: 0,
         creditsCapacity: 1000000
     };
 
@@ -133,9 +133,11 @@ $.when(
 
     Actions.new(0, 'Bank Robbery', 'credits', 1000);
     Actions.new(1, 'Mt Gox Theft', 'credits', 100000000);
+    Actions.new(2, 'Human Power', 'energy', 75);
 
     Storages.new(0, 'Basic Capacitor', 'energy', 1000000, 100);
     Storages.new(1, 'Business Account', 'credits', 1000000000, 10000);
+    Storages.new(2, 'Warehouse', 'matter', 100000000, 100000);
 
     updateActionList();
     updateMachineList();
