@@ -4,9 +4,9 @@ function Storage(id, name, type, amount, cost) {
     this.cost = cost;
 
     this.purchase = function(num) {
-        if (resources.c - num * this.cost >= 0) {
-            resources[this.type + 'Cap'] += this.rate;
-            resources.c = floatSub(resources.c, this.cost);
+        if (resources.c.amount - num * this.cost >= 0) {
+            resources[this.type].capacity += this.rate;
+            resources.c.amount = floatSub(resources.c.amount, this.cost);
         } else {
             alert('Insufficient credits');
         }

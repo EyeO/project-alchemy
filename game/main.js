@@ -2,6 +2,7 @@
 $.when(
     $.getScript('game/misc.js'),
     $.getScript('game/model/Abstract.js'),
+    $.getScript('game/model/Resource.js'),
     $.getScript('game/model/Machine.js'),
     $.getScript('game/model/Action.js'),
     $.getScript('game/model/Storage.js'),
@@ -12,11 +13,6 @@ $.when(
 ).done(function() {
 
     //Game loop
-    var lastTime = Date.now(),
-        lagCorrection = false,
-        updateInterval = 100,
-        rateInterval = 1000;
-
     function gameLoop() {
         var deltaTime = lagCorrection ? Date.now() - lastTime : updateInterval;
         if (lagCorrection) {
@@ -27,41 +23,38 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     function updateResourceRate() {
-        $('.current-energyRate').html(formatNumber(floatSub(resources.e, resources.ePrev) * 1000 / rateInterval) + 'W');
-        $('.current-matterRate').html(formatNumber(floatSub(resources.m, resources.mPrev) * 1000 / rateInterval) + 'g/s');
-        $('.current-creditsRate').html('$' + formatNumber(floatSub(resources.c, resources.cPrev) * 1000 / rateInterval, 1) + '/s');
-        resources.ePrev = resources.e;
-        resources.mPrev = resources.m;
-        resources.cPrev = resources.c;
+        $('.current-energyRate').html( resources.e.rate() + 'W');
+        $('.current-matterRate').html(resources.m.rate() + 'g/s');
+        $('.current-creditsRate').html('$' + resources.c.rate() + '/s');
     }
     setInterval(updateResourceRate, rateInterval);
 
     //Update resources
     function updateResources(delta) {
-        if (resources.e + delta.energy > resources.eCap) {
-            delta.energy = resources.eCap - resources.e;
+        if (resources.e.amount + delta.energy > resources.e.capacity) {
+            delta.energy = resources.e.capacity - resources.e.amount;
         }
-        if (resources.m + delta.matter > resources.mCap) {
-            delta.matter = resources.mCap - resources.m;
+        if (resources.m.amount + delta.matter > resources.m.capacity) {
+            delta.matter = resources.m.capacity - resources.m.amount;
         }
 
-        resources.e = floatAdd(resources.e, delta.energy);
+        resources.e.amount = floatAdd(resources.e.amount, delta.energy);
 
-        resources.m = floatAdd(resources.m, delta.matter);
+        resources.m.amount = floatAdd(resources.m.amount, delta.matter);
 
-        //resources.c += delta.currency;
+        //resources.c.amount += delta.currency;
 
-        $('.current-energy').html(formatNumber(resources.e) + 'J');
-        $('.current-energyCapacity').html(formatNumber(resources.eCap) + 'J');
-        $('.current-energyFilled').html(resources.ePer);
+        $('.current-energy').html(formatNumber(resources.e.amount) + 'J');
+        $('.current-energyCapacity').html(formatNumber(resources.e.capacity) + 'J');
+        $('.current-energyFilled').html(resources.e.percentage());
 
-        $('.current-matter').html(formatNumber(resources.m) + 'g');
-        $('.current-matterCapacity').html(formatNumber(resources.mCap) + 'g');
-        $('.current-matterFilled').html(resources.mPer);
+        $('.current-matter').html(formatNumber(resources.m.amount) + 'g');
+        $('.current-matterCapacity').html(formatNumber(resources.m.capacity) + 'g');
+        $('.current-matterFilled').html(resources.m.percentage());
 
-        $('.current-credits').html('$' + formatNumber(resources.c, 1));
-        $('.current-creditsCapacity').html('$' + formatNumber(resources.cCap, 1));
-        $('.current-creditsFilled').html(resources.cPer);
+        $('.current-credits').html('$' + formatNumber(resources.c.amount, 1));
+        $('.current-creditsCapacity').html('$' + formatNumber(resources.c.capacity, 1));
+        $('.current-creditsFilled').html(resources.c.percentage());
     }
 
     function updateMachineList() {

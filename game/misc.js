@@ -1,39 +1,8 @@
 //Variables
-//TODO DRY
-resources = {
-    e: 0,
-    m: 0,
-    c: 0,
-
-    ePrev: 0,
-    mPrev: 0,
-    cPrev: 0,
-
-    eCap: 0,
-    mCap: 0,
-    cCap: 50,
-
-    ePer: function() {
-        if (resources.eCap === 0) {
-            return '0%';
-        }
-        return parseFloat(100 * resources.e / resources.eCap).toFixed(2) + '%';
-    },
-    mPer: function() {
-        if (resources.mCap === 0) {
-            return '0%';
-        }
-        return parseFloat(100 * resources.m / resources.mCap).toFixed(2) + '%';
-    },
-    cPer: function() {
-        if (resources.cCap === 0) {
-            return '0%';
-        }
-        return parseFloat(100 * resources.c / resources.cCap).toFixed(2) + '%';
-    },
-
-    //eRate etc.
-};
+var lastTime = Date.now(),
+    lagCorrection = false,
+    updateInterval = 100,
+    rateInterval = 1000;
 
 function Delta(e, m, c, deltaTime, instances) {
     this.energy = e * deltaTime * instances / 1000;
