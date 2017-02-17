@@ -31,3 +31,12 @@ li {
 .machine-name {
   font-style: italic;
 }
+
+h1 {
+  font-family: monospace;
+  font-size: 3em;
+}
+
+li:hover {
+  color: rgb(91, 20, 67);
+}
