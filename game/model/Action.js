@@ -3,7 +3,7 @@ function Action(id, name, type, amount) {
 
     this.perform = function() {
         resources[this.type].amount = floatAdd(resources[this.type].amount, this.rate);
-        if( resources[this.type].amount > resources[this.type].capacity) {
+        if (resources[this.type].amount > resources[this.type].capacity) {
             resources[this.type].amount = resources[this.type].capacity;
             //alert(this.type + ' capacity full');
         }

@@ -21,7 +21,7 @@ function Resource(amount, capacity, money) {
 }
 
 resources = {
-    e : new Resource(0,0),
-    m : new Resource(0,0),
-    c: new Resource(0,50,1)
+    e: new Resource(0, 0),
+    m: new Resource(0, 0),
+    c: new Resource(0, 50, 1)
 };

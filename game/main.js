@@ -23,7 +23,7 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     function updateResourceRate() {
-        $('.current-energyRate').html( resources.e.rate() + 'W');
+        $('.current-energyRate').html(resources.e.rate() + 'W');
         $('.current-matterRate').html(resources.m.rate() + 'g/s');
         $('.current-creditsRate').html('$' + resources.c.rate() + '/s');
     }
