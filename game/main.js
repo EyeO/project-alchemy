@@ -27,9 +27,9 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     function updateResourceRate() {
-        $('.current-energyRate').html(formatNumber((resources.e-resources.ePrev)*1000/rateInterval) + 'W');
-        $('.current-matterRate').html(formatNumber((resources.m-resources.mPrev)*1000/rateInterval) + 'g/s');
-        $('.current-creditsRate').html('$' + formatNumber((resources.c-resources.cPrev)*1000/rateInterval, 1) + '/s');
+        $('.current-energyRate').html(formatNumber(floatSub(resources.e,resources.ePrev)*1000/rateInterval) + 'W');
+        $('.current-matterRate').html(formatNumber(floatSub(resources.m,resources.mPrev)*1000/rateInterval) + 'g/s');
+        $('.current-creditsRate').html('$' + formatNumber(floatSub(resources.c,resources.cPrev)*1000/rateInterval, 1) + '/s');
         resources.ePrev = resources.e;
         resources.mPrev = resources.m;
         resources.cPrev = resources.c;
@@ -45,14 +45,11 @@ $.when(
             delta.matter = resources.mCap - resources.m;
         }
 
-        resources.e += delta.energy;
-        resources.eRate = delta.energy * 1000 / updateInterval;
+        resources.e = floatAdd(resources.e ,delta.energy);
 
-        resources.m += delta.matter;
-        resources.mRate = delta.matter * 1000 / updateInterval;
+        resources.m = floatAdd(resources.m ,delta.matter);
 
-        /*resources.c += delta.currency;
-        resources.cRate = delta.currency * 1000 / updateInterval;*/
+        //resources.c += delta.currency;
 
         $('.current-energy').html(formatNumber(resources.e) + 'J');
         $('.current-energyCapacity').html(formatNumber(resources.eCap) + 'J');
@@ -98,7 +95,7 @@ $.when(
     function updateStorageList() {
         $('.storage ul').empty();
         Storages.run(function() {
-            $('.storage ul').append('<li class="purchase-storage ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="machine-name">' + this.name + ' </span>(' + this.stats() + ')</li>');
+            $('.storage ul').append('<li class="purchase-storage ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="machine-name">' + this.name + ' </span>(' + this.stats() + ' Capacity)</li>');
         });
         bindPurchaseStorage();
     }
@@ -111,18 +108,19 @@ $.when(
     }
 
     //Declare
-    Machines.new(0, 'Solar Panel', 'collector', 100000, 100);
+    Machines.new(0, 'Solar Panel', 'collector', 0.1, 100);
     Machines.new(1, 'Mine', 'harvester', 200, 500);
-    Machines.new(2, 'Nuclear Reactor', 'generator', 1000000, 1000000, 10);
-    Machines.new(3, 'Generic Mass Fabricator', 'fabricator', 1000, 10000000, 100000);
 
-    Actions.new(0, 'Bank Robbery', 'c', 1000);
-    Actions.new(1, 'Mt Gox Theft', 'c', 100000000);
-    Actions.new(2, 'Human Power', 'e', 75);
+    Actions.new(0, 'Desk Work', 'c', 0.2);
+    Actions.new(1, 'Human Power', 'e', 75);
 
-    Storages.new(0, 'Basic Capacitor', 'e', 1000000, 100);
-    Storages.new(1, 'Business Account', 'c', 1000000000, 10000);
-    Storages.new(2, 'Warehouse', 'm', 100000000, 100000);
+    Storages.new(0, 'Money Safe', 'c', 1000, 10);
+    Storages.new(1, 'Bank Account', 'c', 100000, 100);
+    Storages.new(2, 'Business Account', 'c', 1000000, 10000);
+    Storages.new(3, 'Corporation Account', 'c', 100000000, 1000000);
+    Storages.new(4, 'Multinational Account', 'c', 10000000000, 10000000);
+    Storages.new(5, 'Megacorp Account', 'c', 1000000000000, 1000000000);
+    Storages.new(6, 'Interplanetary Account', 'c', 1000000000000000, 100000000000);
 
     updateActionList();
     updateMachineList();

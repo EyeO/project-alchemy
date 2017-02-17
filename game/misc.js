@@ -2,7 +2,7 @@
 resources = {
     e: 0,
     m: 0,
-    c: 1000000,
+    c: 0,
 
     ePrev: 0,
     mPrev: 0,
@@ -10,7 +10,7 @@ resources = {
 
     eCap: 0,
     mCap: 0,
-    cCap: 1000000
+    cCap: 50
 };
 
 function Delta(e, m, c, deltaTime, instances) {
@@ -24,6 +24,16 @@ function inherit(proto) {
     function F() {}
     F.prototype = proto;
     return new F();
+}
+
+//Floating point operations
+var big = 1e12;
+function floatAdd(a, b) {
+    return Math.round((a + b)*big)/big;
+}
+
+function floatSub(a, b) {
+    return floatAdd(a, -b);
 }
 
 //Format large numbers - http://stackoverflow.com/a/17633552

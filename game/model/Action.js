@@ -2,7 +2,7 @@ function Action(id, name, type, amount) {
     Abstract.apply(this, arguments);
 
     this.perform = function() {
-        resources[this.type] += this.rate;
+        resources[this.type] = floatAdd(resources[this.type], this.rate);
         if( resources[this.type] > resources[this.type + 'Cap']) {
             resources[this.type] = resources[this.type + 'Cap'];
             //alert(this.type + ' capacity full');
