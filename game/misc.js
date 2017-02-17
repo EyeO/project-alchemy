@@ -1,4 +1,5 @@
 //Variables
+//TODO DRY
 resources = {
     e: 0,
     m: 0,
@@ -10,7 +11,28 @@ resources = {
 
     eCap: 0,
     mCap: 0,
-    cCap: 50
+    cCap: 50,
+
+    ePer: function() {
+        if (resources.eCap === 0) {
+            return '0%';
+        }
+        return parseFloat(100 * resources.e / resources.eCap).toFixed(2) + '%';
+    },
+    mPer: function() {
+        if (resources.mCap === 0) {
+            return '0%';
+        }
+        return parseFloat(100 * resources.m / resources.mCap).toFixed(2) + '%';
+    },
+    cPer: function() {
+        if (resources.cCap === 0) {
+            return '0%';
+        }
+        return parseFloat(100 * resources.c / resources.cCap).toFixed(2) + '%';
+    },
+
+    //eRate etc.
 };
 
 function Delta(e, m, c, deltaTime, instances) {
@@ -28,8 +50,9 @@ function inherit(proto) {
 
 //Floating point operations
 var big = 1e12;
+
 function floatAdd(a, b) {
-    return Math.round((a + b)*big)/big;
+    return Math.round((a + b) * big) / big;
 }
 
 function floatSub(a, b) {
@@ -37,17 +60,56 @@ function floatSub(a, b) {
 }
 
 //Format large numbers - http://stackoverflow.com/a/17633552
-var ranges = [
-    { divider: 1e30 , suffix: 'W', money: 'D' },
-    { divider: 1e27 , suffix: 'X', money: 'N' },
-    { divider: 1e24 , suffix: 'Y', money: 'Sp'},
-    { divider: 1e21 , suffix: 'Z', money: 'Sx' },
-    { divider: 1e18 , suffix: 'E', money: 'Qi' },
-    { divider: 1e15 , suffix: 'P', money: 'Qa' },
-    { divider: 1e12 , suffix: 'T', money: 'T' },
-    { divider: 1e9 , suffix: 'G', money: 'B' },
-    { divider: 1e6 , suffix: 'M', money: 'M' },
-    { divider: 1e3 , suffix: 'k', money: 'k' }
+var ranges = [{
+        divider: 1e30,
+        suffix: 'W',
+        money: 'D'
+    },
+    {
+        divider: 1e27,
+        suffix: 'X',
+        money: 'N'
+    },
+    {
+        divider: 1e24,
+        suffix: 'Y',
+        money: 'Sp'
+    },
+    {
+        divider: 1e21,
+        suffix: 'Z',
+        money: 'Sx'
+    },
+    {
+        divider: 1e18,
+        suffix: 'E',
+        money: 'Qi'
+    },
+    {
+        divider: 1e15,
+        suffix: 'P',
+        money: 'Qa'
+    },
+    {
+        divider: 1e12,
+        suffix: 'T',
+        money: 'T'
+    },
+    {
+        divider: 1e9,
+        suffix: 'G',
+        money: 'B'
+    },
+    {
+        divider: 1e6,
+        suffix: 'M',
+        money: 'M'
+    },
+    {
+        divider: 1e3,
+        suffix: 'k',
+        money: 'k'
+    }
 ];
 
 function formatNumber(n, money) {

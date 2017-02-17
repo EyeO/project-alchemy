@@ -27,9 +27,9 @@ $.when(
     setInterval(gameLoop, updateInterval);
 
     function updateResourceRate() {
-        $('.current-energyRate').html(formatNumber(floatSub(resources.e,resources.ePrev)*1000/rateInterval) + 'W');
-        $('.current-matterRate').html(formatNumber(floatSub(resources.m,resources.mPrev)*1000/rateInterval) + 'g/s');
-        $('.current-creditsRate').html('$' + formatNumber(floatSub(resources.c,resources.cPrev)*1000/rateInterval, 1) + '/s');
+        $('.current-energyRate').html(formatNumber(floatSub(resources.e, resources.ePrev) * 1000 / rateInterval) + 'W');
+        $('.current-matterRate').html(formatNumber(floatSub(resources.m, resources.mPrev) * 1000 / rateInterval) + 'g/s');
+        $('.current-creditsRate').html('$' + formatNumber(floatSub(resources.c, resources.cPrev) * 1000 / rateInterval, 1) + '/s');
         resources.ePrev = resources.e;
         resources.mPrev = resources.m;
         resources.cPrev = resources.c;
@@ -38,27 +38,30 @@ $.when(
 
     //Update resources
     function updateResources(delta) {
-        if(resources.e + delta.energy > resources.eCap) {
+        if (resources.e + delta.energy > resources.eCap) {
             delta.energy = resources.eCap - resources.e;
         }
-        if(resources.m + delta.matter > resources.mCap) {
+        if (resources.m + delta.matter > resources.mCap) {
             delta.matter = resources.mCap - resources.m;
         }
 
-        resources.e = floatAdd(resources.e ,delta.energy);
+        resources.e = floatAdd(resources.e, delta.energy);
 
-        resources.m = floatAdd(resources.m ,delta.matter);
+        resources.m = floatAdd(resources.m, delta.matter);
 
         //resources.c += delta.currency;
 
         $('.current-energy').html(formatNumber(resources.e) + 'J');
         $('.current-energyCapacity').html(formatNumber(resources.eCap) + 'J');
+        $('.current-energyFilled').html(resources.ePer);
 
         $('.current-matter').html(formatNumber(resources.m) + 'g');
         $('.current-matterCapacity').html(formatNumber(resources.mCap) + 'g');
+        $('.current-matterFilled').html(resources.mPer);
 
         $('.current-credits').html('$' + formatNumber(resources.c, 1));
         $('.current-creditsCapacity').html('$' + formatNumber(resources.cCap, 1));
+        $('.current-creditsFilled').html(resources.cPer);
     }
 
     function updateMachineList() {
