@@ -2,7 +2,7 @@
   color: #CCC;
 }
 
-.purchase, .perform, .purchase-storage {
+.purchase, .perform, .purchase-storage, .trade {
   cursor: pointer;
 }
 

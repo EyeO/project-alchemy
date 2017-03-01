@@ -6,6 +6,7 @@ $.when(
     $.getScript('game/model/Machine.js'),
     $.getScript('game/model/Action.js'),
     $.getScript('game/model/Storage.js'),
+    $.getScript('game/model/Market.js'),
     $.getScript('game/model/MachineTypes.js'),
     $.Deferred(function(deferred) {
         $(deferred.resolve);
@@ -103,9 +104,26 @@ $.when(
         });
     }
 
+    function updateMarketList() {
+        $('.market ul').empty();
+        Markets.run(function() {
+            $('.market ul').append('<li class="trade ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="item-name">' + this.name + ' </span>(' + this.stats() + ') </li>');
+        });
+        bindTrade();
+    }
+
+    function bindTrade() {
+        $('.trade').click(function() {
+            var id = $(this).attr('class').split(' ')[1];
+            Markets.get(id).trade();
+            updateMarketList();
+        });
+    }
+
     //Declare
     Machines.new(0, 'Solar Panel', 'collector', 0.1, 100);
     Machines.new(1, 'Mine', 'harvester', 200, 500);
+    Machines.new(2, 'Power Plant', 'collector', 10, -3);
 
     Actions.new(0, 'Desk Work', 'c', 0.2);
     Actions.new(1, 'Human Power', 'e', 75);
@@ -119,8 +137,11 @@ $.when(
     Storages.new(5, 'Megacorp Account', 'c', 1000000000000, 1000000000);
     Storages.new(6, 'Interplanetary Account', 'c', 1000000000000000, 100000000000);
 
+    Markets.new(0, 'Small Energy Grid', 'e', 100, 10, 'sell');
+
     updateActionList();
     updateMachineList();
     updateStorageList();
+    updateMarketList();
 
 });
