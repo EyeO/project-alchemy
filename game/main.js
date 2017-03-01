@@ -107,7 +107,15 @@ $.when(
     function updateMarketList() {
         $('.market ul').empty();
         Markets.run(function() {
-            $('.market ul').append('<li class="trade ' + this.id + '">$' + formatNumber(this.cost, 1) + ' - <span class="item-name">' + this.name + ' </span>(' + this.stats() + ') </li>');
+            var stats;
+            if (this.action == 'buy') {
+                stats = ['-$' + formatNumber(this.cost, 1), this.stats()];
+            } else if (this.action == 'sell') {
+                stats = ['-' + this.stats().substring(1), '+$' + formatNumber(this.cost, 1)];
+            } else {
+                stats = ['', ''];
+            }
+            $('.market ul').append('<li class="trade ' + this.id + '"><span class="item-name">' + this.name + ' </span>(' + stats[1] + ', ' + stats[0] + ') </li>');
         });
         bindTrade();
     }
@@ -123,14 +131,17 @@ $.when(
     //Declare
     Machines.new(0, 'Solar Panel', 'collector', 0.1, 100);
     Machines.new(1, 'Mine', 'harvester', 200, 500);
-    Machines.new(2, 'Power Plant', 'collector', 10, -3);
+    Machines.new(2, 'Free Power Plant', 'collector', 10, 0);
 
     Actions.new(0, 'Desk Work', 'c', 0.2);
+    Actions.new(2, 'CEO Work', 'c', 10);
     Actions.new(1, 'Human Power', 'e', 75);
 
+
+    Storages.new(10, 'Temp Energy Storage', 'e', 1000000, 2);
+    Storages.new(11, 'Temp Warehouse', 'm', 15, 6);
     Storages.new(0, 'Money Safe', 'c', 1000, 10);
     Storages.new(1, 'Bank Account', 'c', 100000, 100);
-    Storages.new(12, 'NRG test', 'e', 1000000, 2);
     Storages.new(2, 'Business Account', 'c', 1000000, 10000);
     Storages.new(3, 'Corporation Account', 'c', 100000000, 1000000);
     Storages.new(4, 'Multinational Account', 'c', 10000000000, 10000000);
@@ -138,8 +149,8 @@ $.when(
     Storages.new(6, 'Interplanetary Account', 'c', 1000000000000000, 100000000000);
 
     Markets.new(0, 'Small Energy Grid', 'e', 100, 10, 'sell');
-    Markets.new(1, 'Matter for sale', 'm', 10, 30, 'buym');
-    Markets.new(2, 'Energy for sale', 'e', 10, 40, 'buye');
+    Markets.new(1, 'Matter for sale', 'm', 10, 30, 'buy');
+    Markets.new(2, 'Energy for sale', 'e', 10, 40, 'buy');
 
     updateActionList();
     updateMachineList();
