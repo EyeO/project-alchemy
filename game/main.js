@@ -112,6 +112,7 @@ $.when(
 
     Storages.new(0, 'Money Safe', 'c', 1000, 10);
     Storages.new(1, 'Bank Account', 'c', 100000, 100);
+    Storages.new(12, 'NRG test', 'e', 1000000, 2);
     Storages.new(2, 'Business Account', 'c', 1000000, 10000);
     Storages.new(3, 'Corporation Account', 'c', 100000000, 1000000);
     Storages.new(4, 'Multinational Account', 'c', 10000000000, 10000000);
