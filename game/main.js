@@ -107,7 +107,7 @@ $.when(
     function updateMarketList() {
         $('.market ul').empty();
         Markets.run(function() {
-            $('.market ul').append('<li class="trade ' + this.id + '"><span class="item-name">' + this.name + ' </span>(' + this.action + ' ' + this.stats().substring(1) + ' for $' + this.cost + ') </li>');
+            $('.market ul').append('<li class="trade ' + this.id + '"><span class="item-name">' + this.name + ' </span>(' + this.action.sentenceCase() + ' ' + this.stats().substring(1) + ' for $' + this.cost + ') </li>');
         });
         bindTrade();
     }
