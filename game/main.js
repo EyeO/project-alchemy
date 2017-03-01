@@ -138,6 +138,8 @@ $.when(
     Storages.new(6, 'Interplanetary Account', 'c', 1000000000000000, 100000000000);
 
     Markets.new(0, 'Small Energy Grid', 'e', 100, 10, 'sell');
+    Markets.new(1, 'Matter for sale', 'm', 10, 30, 'buym');
+    Markets.new(2, 'Energy for sale', 'e', 10, 40, 'buye');
 
     updateActionList();
     updateMachineList();
