@@ -107,15 +107,7 @@ $.when(
     function updateMarketList() {
         $('.market ul').empty();
         Markets.run(function() {
-            var stats;
-            if (this.action == 'buy') {
-                stats = ['-$' + formatNumber(this.cost, 1), this.stats()];
-            } else if (this.action == 'sell') {
-                stats = ['-' + this.stats().substring(1), '+$' + formatNumber(this.cost, 1)];
-            } else {
-                stats = ['', ''];
-            }
-            $('.market ul').append('<li class="trade ' + this.id + '"><span class="item-name">' + this.name + ' </span>(' + stats[1] + ', ' + stats[0] + ') </li>');
+            $('.market ul').append('<li class="trade ' + this.id + '"><span class="item-name">' + this.name + ' </span>(' + this.action + ' ' + this.stats().substring(1) + ' for $' + this.cost + ') </li>');
         });
         bindTrade();
     }
