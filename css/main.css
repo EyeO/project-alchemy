@@ -38,6 +38,18 @@ h1 {
   font-size: 3em;
 }
 
+ul {
+  list-style: none;
+}
+
 li:hover {
   color: rgb(91, 20, 67);
+}
+.align-left {
+  display: inline-block;
+}
+.align-right {
+  text-align: right;
+  display: inline-block;
+  float: right;
 }
