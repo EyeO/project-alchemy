@@ -28,6 +28,11 @@ function floatSub(a, b) {
     return floatAdd(a, -b);
 }
 
+//Caps - http://stackoverflow.com/a/1026087
+String.prototype.sentenceCase = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 //Format large numbers - http://stackoverflow.com/a/17633552
 var ranges = [{
         divider: 1e30,

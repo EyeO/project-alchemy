@@ -6,6 +6,7 @@ $.when(
     $.getScript('game/model/Machine.js'),
     $.getScript('game/model/Action.js'),
     $.getScript('game/model/Storage.js'),
+    $.getScript('game/model/Market.js'),
     $.getScript('game/model/MachineTypes.js'),
     $.Deferred(function(deferred) {
         $(deferred.resolve);
@@ -103,13 +104,34 @@ $.when(
         });
     }
 
+    function updateMarketList() {
+        $('.market ul').empty();
+        Markets.run(function() {
+            $('.market ul').append('<li class="trade ' + this.id + '"><span class="item-name">' + this.name + ' </span>(' + this.action.sentenceCase() + ' ' + this.stats().substring(1) + ' for $' + this.cost + ') </li>');
+        });
+        bindTrade();
+    }
+
+    function bindTrade() {
+        $('.trade').click(function() {
+            var id = $(this).attr('class').split(' ')[1];
+            Markets.get(id).trade();
+            updateMarketList();
+        });
+    }
+
     //Declare
     Machines.new(0, 'Solar Panel', 'collector', 0.1, 100);
     Machines.new(1, 'Mine', 'harvester', 200, 500);
+    Machines.new(2, 'Free Power Plant', 'collector', 10, 0);
 
     Actions.new(0, 'Desk Work', 'c', 0.2);
+    Actions.new(2, 'CEO Work', 'c', 10);
     Actions.new(1, 'Human Power', 'e', 75);
 
+
+    Storages.new(10, 'Temp Energy Storage', 'e', 1000000, 2);
+    Storages.new(11, 'Temp Warehouse', 'm', 15, 6);
     Storages.new(0, 'Money Safe', 'c', 1000, 10);
     Storages.new(1, 'Bank Account', 'c', 100000, 100);
     Storages.new(2, 'Business Account', 'c', 1000000, 10000);
@@ -118,8 +140,13 @@ $.when(
     Storages.new(5, 'Megacorp Account', 'c', 1000000000000, 1000000000);
     Storages.new(6, 'Interplanetary Account', 'c', 1000000000000000, 100000000000);
 
+    Markets.new(0, 'Small Energy Grid', 'e', 100, 10, 'sell');
+    Markets.new(1, 'Matter for sale', 'm', 10, 30, 'buy');
+    Markets.new(2, 'Energy for sale', 'e', 10, 40, 'buy');
+
     updateActionList();
     updateMachineList();
     updateStorageList();
+    updateMarketList();
 
 });

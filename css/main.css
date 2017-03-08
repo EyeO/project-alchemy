@@ -1,14 +1,14 @@
 .research, .upgrades {
-  color: #CCC;
+  color: #6b6b6b;
 }
 
-.purchase, .perform, .purchase-storage {
+.purchase, .perform, .purchase-storage, .trade {
   cursor: pointer;
 }
 
 html {
   font-family: 'Open Sans', sans-serif;
-  background: #000;
+  background: #fff;
 }
 
 li {
@@ -25,7 +25,7 @@ li {
   width: 960px;
   margin-left: auto;
   margin-right: auto;
-  background: rgb(31, 164, 187);
+  background: rgb(191, 232, 131);
   padding: 20px;
 }
 
@@ -38,6 +38,18 @@ h1 {
   font-size: 3em;
 }
 
+ul {
+  list-style: none;
+}
+
 li:hover {
-  color: rgb(91, 20, 67);
+  color: rgb(81, 211, 228);
+}
+.align-left {
+  display: inline-block;
+}
+.align-right {
+  text-align: right;
+  display: inline-block;
+  float: right;
 }
